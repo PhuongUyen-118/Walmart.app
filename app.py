@@ -44,3 +44,46 @@ if uploaded_file is not None:
 
     st.subheader("📈 Dự đoán doanh số:")
     st.success(f"Doanh số dự đoán: ${prediction[0]:,.2f}")
+
+import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+st.title("📊 Phân tích dữ liệu Walmart")
+
+# 1. Line chart: Weekly Sales over Time
+st.subheader("1. Weekly Sales over Time")
+fig1 = plt.figure(figsize=(10,4))
+plt.plot(df['Date'], df['Weekly_Sales'])
+plt.xlabel('Date')
+plt.ylabel('Weekly Sales')
+plt.title('Weekly Sales Over Time')
+st.pyplot(fig1)
+
+# 2. Bar chart: Average Sales by Store
+st.subheader("2. Average Sales by Store")
+fig2 = plt.figure(figsize=(10,5))
+store_avg = df.groupby('Store')['Weekly_Sales'].mean().sort_values(ascending=False)
+store_avg.plot(kind='bar')
+plt.title('Average Weekly Sales by Store')
+st.pyplot(fig2)
+
+# 3. Boxplot: Sales distribution
+st.subheader("3. Weekly Sales Distribution")
+fig3 = plt.figure(figsize=(8,4))
+sns.boxplot(data=df, y='Weekly_Sales')
+plt.title('Sales Distribution')
+st.pyplot(fig3)
+
+# 4. Pairplot: Relationship between features
+st.subheader("4. Feature Relationships (Pairplot)")
+sns_plot = sns.pairplot(df[["Weekly_Sales", "Temperature", "Fuel_Price", "CPI", "Unemployment"]])
+st.pyplot(sns_plot)
+
+# 5. Heatmap: Correlation matrix
+st.subheader("5. Correlation Heatmap")
+fig5 = plt.figure(figsize=(8,6))
+sns.heatmap(df[["Weekly_Sales", "Temperature", "Fuel_Price", "CPI", "Unemployment"]].corr(), annot=True, cmap="YlGnBu")
+plt.title("Correlation Matrix")
+st.pyplot(fig5)
+
